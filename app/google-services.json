@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "589693228448",
+    "project_id": "recimapps",
+    "storage_bucket": "recimapps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:589693228448:android:e3329386f9030d630a80c5",
+        "android_client_info": {
+          "package_name": "com.recimaps.recimaps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "589693228448-a563nv6s1o85vaafr62ksfpseu6a06nv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.recimaps.recimaps",
+            "certificate_hash": "3cdeed3461f9fc5e09b0ccaf7c3bc340646a2729"
+          }
+        },
+        {
+          "client_id": "589693228448-qg88tq9c5vjakohlsvi5l18geqv5lj39.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYhEsx-dQXQs2BZt9-AjMIRJmYK-os6OQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "589693228448-qg88tq9c5vjakohlsvi5l18geqv5lj39.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

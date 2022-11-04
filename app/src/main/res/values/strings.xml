@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Recimaps</string>
     <string name="todo" />
+    <string name="nombre_usuario">Nombre usuario</string>
+    <string name="correo_electr_nico">Correo Electrónico</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="enviar">Enviar</string>
+    <string name="account_cir">TODO</string>
+    <string name="confirme_contrase_a">Confirme contraseña</string>
+    <string name="hojas">TODO</string>
 </resources>

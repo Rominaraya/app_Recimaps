@@ -12,4 +12,5 @@
     <string name="registro_listo_iniciar_sesi_n">Registro listo, iniciar sesión!</string>
     <string name="iniciar_sesi_n">Iniciar sesión</string>
     <string name="crear_cuenta">Crear cuenta</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

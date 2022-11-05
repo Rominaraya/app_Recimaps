@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
 
                 firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
                     if (it.isSuccessful){
-                        val intent = Intent(this, MainActivity::class.java)
+                        val intent = Intent(this, MapsActivity::class.java)
                         startActivity(intent)
                     } else{
                         Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
@@ -47,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
-     //mantener sesion inciada
+     //mantener sesión iniciada
     /*override fun onStart() {
         super.onStart()
 

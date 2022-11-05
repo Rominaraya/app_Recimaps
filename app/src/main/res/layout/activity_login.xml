@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:circularflow_radiusInDP="20"
-    tools:context=".MainActivity">
+    tools:context=".LoginActivity">
 
     <ImageView
         android:id="@+id/ivLogo"
@@ -22,7 +21,6 @@
 
     <Button
         android:id="@+id/btnStar"
-        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
@@ -31,32 +29,33 @@
         android:backgroundTint="#9FD8DA"
         android:color="#009688"
         android:state_pressed="true"
-        android:text="Iniciar sesión"
+        android:text="@string/iniciar_sesi_n"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/white"
         app:cornerRadius="20dp"
         app:layout_constraintBottom_toTopOf="@+id/btnCreateAccount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="hardcodedtext,TextContrastCheck" />
+        tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/btnCreateAccount"
-        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
         android:layout_marginEnd="56dp"
         android:layout_marginBottom="200dp"
         android:backgroundTint="#03989E"
-        android:text="Crear cuenta"
+        android:text="@string/crear_cuenta"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/white"
         app:cornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="hardcodedtext,TextContrastCheck" />
+        tools:ignore="TextContrastCheck" />
 
     <EditText
         android:id="@+id/etPassword"
@@ -93,7 +92,7 @@
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColorHint="#757575"
+        android:textColorHint="#616161"
         app:layout_constraintBottom_toTopOf="@+id/etPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -106,14 +105,14 @@
         android:layout_height="wrap_content"
         android:text="¿Haz olvidado tu contraseña?"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="#878787"
+        android:textColor="#546E7A"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnCreateAccount"
         app:layout_constraintVertical_bias="0.129"
-        tools:ignore="hardcodedtext,TextContrastCheck,TextContrastCheck" />
+        tools:ignore="hardcodedtext" />
 
     <TextView
         android:id="@+id/tvWelcome"
@@ -124,11 +123,10 @@
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/ivLogo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.331"
+        app:layout_constraintHorizontal_bias="0.325"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.743"
+        app:layout_constraintVertical_bias="0.71"
         tools:ignore="HardcodedText" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

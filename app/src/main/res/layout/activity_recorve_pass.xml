@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbarSize="4dp"
+    tools:context=".RecorvePassActivity">
+
+
+    <ImageView
+        android:id="@+id/ivlock"
+        android:layout_width="240dp"
+        android:layout_height="101dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginEnd="56dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvTitulo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.752"
+        app:srcCompat="@drawable/ic_key"
+        android:contentDescription="@string/candado" />
+
+    <ImageView
+        android:id="@+id/ivhoja"
+        android:layout_width="70dp"
+        android:layout_height="64dp"
+        android:rotation="-46"
+        app:layout_constraintBottom_toBottomOf="@+id/ivlock"
+        app:layout_constraintEnd_toEndOf="@+id/ivlock"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="@+id/ivlock"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.654"
+        app:srcCompat="@drawable/hoja_splash"
+        android:contentDescription="@string/hoja_logo" />
+
+    <Button
+        android:id="@+id/btnSend"
+        android:layout_width="299dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginBottom="200dp"
+        android:backgroundTint="#03989E"
+        android:text="Enviar"
+        app:cornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText,TextContrastCheck" />
+
+    <EditText
+        android:id="@+id/etEmailAddress"
+        android:layout_width="299dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginBottom="44dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/correo_electr_nico"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColorHint="#757575"
+        app:layout_constraintBottom_toTopOf="@+id/btnSend"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="LabelFor,MissingConstraints" />
+
+    <TextView
+        android:id="@+id/tvTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginBottom="96dp"
+        android:scrollbarSize="10dp"
+        android:textColor="@color/black"
+        android:text="Restablecer contraseña "
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/etEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/tvInfo"
+        android:layout_width="293dp"
+        android:layout_height="58dp"
+        android:text="Escribe tu dirección de correo electrónico a continuación y te enviaremos instrucciones para restablecer la cuenta"
+        app:layout_constraintBottom_toTopOf="@+id/etEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.524"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitulo"
+        app:layout_constraintVertical_bias="0.48"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/tvReturnInit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginBottom="116dp"
+        android:text="@string/regresar_a_inicio"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSend"
+        app:layout_constraintVertical_bias="0.476" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,4 +13,7 @@
     <string name="iniciar_sesi_n">Iniciar sesión</string>
     <string name="crear_cuenta">Crear cuenta</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="regresar_a_inicio">Regresar a inicio</string>
+    <string name="candado">candado</string>
+    <string name="hoja_logo">hoja logo</string>
 </resources>

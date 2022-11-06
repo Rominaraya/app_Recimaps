@@ -27,6 +27,10 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent( this, RegisterActivity::class.java)
             startActivity(intent)
         }
+        binding.tvRestorepass.setOnClickListener {
+            val intent = Intent( this, RecorvePassActivity::class.java)
+            startActivity(intent)
+        }
 
         binding.btnStar.setOnClickListener {
             val email = binding.etEmail.text.toString()

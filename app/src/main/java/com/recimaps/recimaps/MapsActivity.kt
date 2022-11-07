@@ -41,7 +41,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         // Add maipu
-        val maipu = LatLng(-33.507129, -70.769332)
+       val maipu = LatLng(-33.507129, -70.769332)
         mMap.addMarker(MarkerOptions().position(maipu).title("Maipu city"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(maipu))
     }

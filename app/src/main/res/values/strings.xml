@@ -16,4 +16,8 @@
     <string name="regresar_a_inicio">Regresar a inicio</string>
     <string name="candado">candado</string>
     <string name="hoja_logo">hoja logo</string>
+    <string name="punto_de_reciclaje">Punto de reciclaje</string>
+    <string name="notificaci_n">Notificación</string>
+    <string name="publicaci_n">Publicación</string>
+    <string name="men">Menú</string>
 </resources>

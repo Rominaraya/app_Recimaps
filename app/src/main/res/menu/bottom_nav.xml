@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/punto_de_reciclaje"
+        android:id="@+id/point"
+        android:icon="@drawable/ic_baseline_location"/>
+    <item android:title="@string/notificaci_n"
+        android:id="@+id/notifi"
+        android:icon="@drawable/ic_baseline_notification"/>
+    <item android:title="@string/publicaci_n"
+        android:id="@+id/publi"
+        android:icon="@drawable/ic_baseline_push_pin"/>
+    <item android:title="@string/men"
+        android:id="@+id/menu"
+        android:icon="@drawable/ic_baseline_menu"/>
+</menu>

@@ -52,11 +52,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
      //mantener sesión iniciada
-    /*override fun onStart() {
+       /*override fun onStart() {
         super.onStart()
 
         if (firebaseAuth.currentUser != null){
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, MapsActivity::class.java)
             startActivity(intent)
         }
     }*/

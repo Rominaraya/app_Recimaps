@@ -33,7 +33,7 @@ class RegisterActivity : AppCompatActivity() {
 
             if (email.isNotEmpty() && pass.isNotEmpty() && confirmPass.isNotEmpty()){
                 val len = pass.length
-                fun numberOnPassword(pass:String):Boolean{
+                fun numberOnPassword(pass:String):Boolean {
                     var check = false
                     for (char in pass){
                         if (char.isDigit()) {

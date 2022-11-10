@@ -7,6 +7,8 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.recimaps.recimaps.databinding.ActivityRegisterBinding
 
+
+
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
@@ -30,20 +32,44 @@ class RegisterActivity : AppCompatActivity() {
             val confirmPass = binding.etConfirmation.text.toString()
 
             if (email.isNotEmpty() && pass.isNotEmpty() && confirmPass.isNotEmpty()){
-                if (pass == confirmPass){
+                val len = pass.length
+                fun numberOnPassword(pass:String):Boolean{
+                    var check = false
+                    for (char in pass){
+                        if (char.isDigit()) {
+                            check = true
 
-                    firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener{
-                        if (it.isSuccessful){
-                            val intent = Intent( this , LoginActivity::class.java)
-                            startActivity(intent)
-
-                        }else{
-                            Toast.makeText( this , it.exception.toString() , Toast.LENGTH_SHORT).show()
                         }
+
                     }
-                }else{
-                    Toast.makeText( this , "La contraseña no coincide" , Toast.LENGTH_SHORT).show()
+                    return check
                 }
+                val check = numberOnPassword(pass)
+                if (len >= 8 && check) {
+                    if (pass == confirmPass) {
+
+                        firebaseAuth.createUserWithEmailAndPassword(email, pass)
+                            .addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    val intent = Intent(this, LoginActivity::class.java)
+                                    startActivity(intent)
+
+                                } else {
+                                    Toast.makeText(
+                                        this,
+                                        it.exception.toString(),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                    } else {
+                        Toast.makeText(this, "Las contraseñas no coincide", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else {
+                    Toast.makeText( this , "La contraseña debe tener al menos 8 digitos y al menos un numero" , Toast.LENGTH_SHORT).show()
+                }
+
             }else{
                 Toast.makeText( this , "No se permiten campos vacíos" , Toast.LENGTH_SHORT).show()
             }

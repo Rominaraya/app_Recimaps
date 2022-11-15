@@ -8,7 +8,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.recimaps.recimaps.databinding.ActivityLoginBinding
 
-
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
@@ -52,6 +51,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
      //mantener sesión iniciada
+     /*
      override fun onStart() {
         super.onStart()
 
@@ -60,4 +60,5 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+      */
 }

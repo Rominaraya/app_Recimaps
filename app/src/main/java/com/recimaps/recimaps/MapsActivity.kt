@@ -24,14 +24,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        val santiago = LatLng(-33.4513, -70.6653)
-        mMap.addMarker(MarkerOptions().position(santiago).title("Santiago"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(santiago))
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(santiago,13f), 1,null)
+        mMap.setMinZoomPreference(11f)
+        mMap.setMaxZoomPreference(20f)
+        tosInt ()
         enableLocation()
         mMap.setOnMyLocationButtonClickListener(this)
         mMap.setOnMyLocationClickListener(this)
-
     }
 
     companion object{
@@ -132,7 +130,30 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
 
     override fun onMyLocationClick(p0: Location) {
         Toast.makeText(this, "Estas en ${p0.latitude}, ${p0.longitude}.", Toast.LENGTH_SHORT).show()}
+
+    private fun tosInt (){
+
+        val tos = LatLng(-33.4912422, -70.5935661)
+        mMap.addMarker(MarkerOptions().position(tos).title("Punto limpio"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(tos))
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(tos,13f), 1,null)
+        val tos1 = LatLng(-33.43788, -70.58087)
+        mMap.addMarker(MarkerOptions().position(tos1).title("Recieco"))
+        val tos2 = LatLng(-33.4656328, -70.6000689)
+        mMap.addMarker(MarkerOptions().position(tos2).title("Circular"))
+        val tos3 = LatLng(-33.4619722, -70.574565)
+        mMap.addMarker(MarkerOptions().position(tos3).title("Sociedad puntos y tejidos SPA"))
+        val tos4 = LatLng(-33.4824628, -70.6095227)
+        mMap.addMarker(MarkerOptions().position(tos4).title("Punto verde"))
+        val tos5 = LatLng(-33.4774616, -70.6034151)
+        mMap.addMarker(MarkerOptions().position(tos5).title("ECOCITEX"))
+        val tos6 = LatLng(-33.4551468, -70.592697)
+        mMap.addMarker(MarkerOptions().position(tos6).title("Sin Envase"))
+        val tos7 = LatLng(-33.4520164, -70.5939894)
+        mMap.addMarker(MarkerOptions().position(tos7).title("Municipalidad de Ñuñoa"))
+    }
 }
+
 
 /**
      * Manipulates the map once available.

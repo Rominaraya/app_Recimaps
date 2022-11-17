@@ -15,7 +15,8 @@ tools:context=".MapsActivity">
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:context=".MapsActivity" />
+        tools:context=".MapsActivity"
+        tools:layout="@layout/activity_maps" />
 
     <SearchView
     android:id="@+id/searchView"
@@ -45,8 +46,18 @@ tools:context=".MapsActivity">
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
     </FrameLayout>
 
+    <Button
+        android:id="@+id/cancelAddPoint"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="500dp"
+        android:text="@string/agregar_punto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
     android:id="@+id/bottomView"

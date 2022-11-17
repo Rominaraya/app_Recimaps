@@ -1,10 +1,12 @@
 package com.recimaps.recimaps
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -21,6 +23,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+    private var latLong: LatLng? = null
+    private lateinit var addPoint : Button
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
@@ -46,6 +50,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        addPoint = findViewById(R.id.cancelAddPoint)
+
+        addPoint.setOnClickListener {
+            val centerLatLang = mMap.projection.visibleRegion.latLngBounds.center
+            saveLtLng(centerLatLang)
+            val intent = Intent(this, AddInterestPoint::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun isLocationPermissionGranted()=ContextCompat.checkSelfPermission(
@@ -151,6 +164,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
         mMap.addMarker(MarkerOptions().position(tos6).title("Sin Envase"))
         val tos7 = LatLng(-33.4520164, -70.5939894)
         mMap.addMarker(MarkerOptions().position(tos7).title("Municipalidad de Ñuñoa"))
+    }
+
+    private fun saveLtLng(ltLng : LatLng){
+        latLong = ltLng
+    }
+    fun getLtLng() : LatLng? {
+        return latLong
     }
 }
 

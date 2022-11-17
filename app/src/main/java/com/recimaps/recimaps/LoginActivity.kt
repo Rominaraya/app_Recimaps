@@ -3,15 +3,19 @@ package com.recimaps.recimaps
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds.Email
 import android.widget.Toast
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.recimaps.recimaps.databinding.ActivityLoginBinding
+import org.w3c.dom.Text
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var userId: String
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +44,7 @@ class LoginActivity : AppCompatActivity() {
                 firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
                     if (it.isSuccessful){
                         val intent = Intent(this, MapsActivity::class.java)
+                        reciveId(email)
                         startActivity(intent)
                     } else{
                         Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
@@ -50,7 +55,16 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
-     //mantener sesión iniciada
+
+    private fun reciveId(id: String){
+        val recivedId = id
+        userId = recivedId
+
+    }
+    fun getUserId():String{
+        return userId
+    }
+    //mantener sesión iniciada
      /*
      override fun onStart() {
         super.onStart()

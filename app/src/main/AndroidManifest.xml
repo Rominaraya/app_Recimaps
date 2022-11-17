@@ -15,7 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Recimaps"
         tools:targetApi="31">
-
+        <activity
+            android:name=".AddInterestPoint"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".RecorvePassActivity"
             android:exported="false">
@@ -57,4 +63,5 @@
                 android:value="" />
         </activity>
     </application>
+
 </manifest>

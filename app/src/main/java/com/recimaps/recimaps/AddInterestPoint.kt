@@ -1,0 +1,165 @@
+package com.recimaps.recimaps
+
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.LinearLayout
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.TextView
+import android.widget.Toast
+import com.google.firebase.firestore.FirebaseFirestore
+
+
+
+
+
+class AddInterestPoint : AppCompatActivity(), RadioGroup.OnCheckedChangeListener {
+
+    private lateinit var recycl: RadioButton
+    private lateinit var reut: RadioButton
+    private var group1: RadioGroup? = null
+    private lateinit var savePointButton: Button
+    private lateinit var cancelPointButton: Button
+    private lateinit var latas: CheckBox
+    private lateinit var plasticos: CheckBox
+    private lateinit var carton: CheckBox
+    private lateinit var vidrio: CheckBox
+    private lateinit var libros: CheckBox
+    private lateinit var ropa: CheckBox
+    private lateinit var juguetes: CheckBox
+    private lateinit var herramientas: CheckBox
+    private lateinit var componentes: CheckBox
+    private lateinit var otros: CheckBox
+    private lateinit var descripcion: TextView
+    private lateinit var recGroup1: LinearLayout
+    private lateinit var recGroup2: LinearLayout
+    private lateinit var reuGroup1: LinearLayout
+    private lateinit var reuGroup2: LinearLayout
+
+    private val bd = FirebaseFirestore.getInstance()
+    private var login = LoginActivity()
+    private var mapsCoord = MapsActivity()
+    private val latLong = mapsCoord.getLtLng()
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_add_interest_point)
+        group1?.setOnCheckedChangeListener(this)
+
+        recGroup1 = findViewById(R.id.recLay)
+        recGroup2 = findViewById(R.id.recLay2)
+        reuGroup1 = findViewById(R.id.reuLay)
+        reuGroup2 = findViewById(R.id.reuLay2)
+        group1 = findViewById(R.id.rGroup)
+        recycl = findViewById(R.id.recycling)
+        reut = findViewById(R.id.reutilization)
+        latas = findViewById(R.id.recTLatas)
+        plasticos = findViewById(R.id.recTPlast)
+        carton = findViewById(R.id.recTCart)
+        vidrio = findViewById(R.id.recTVidr)
+        libros = findViewById(R.id.reuTLibros)
+        ropa = findViewById(R.id.reuTRopa)
+        juguetes = findViewById(R.id.reuTJug)
+        herramientas = findViewById(R.id.reuTHerr)
+        componentes = findViewById(R.id.reuTComp)
+        otros = findViewById(R.id.reuTOtros)
+        descripcion = findViewById(R.id.pointDescription)
+
+
+        savePointButton = findViewById(R.id.savePoint)
+        cancelPointButton = findViewById(R.id.cancelAddPoint)
+
+
+        cancelPointButton.setOnClickListener {
+            val intent = Intent(this, MapsActivity::class.java)
+            startActivity(intent)
+        }
+
+
+    }
+
+
+    override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+        when (checkedId) {
+            recycl.id -> addRecycl()
+        }
+        when (checkedId) {
+            reut.id -> addReut()
+        }
+
+    }
+
+    private fun addRecycl() {
+
+        savePointButton.setOnClickListener {
+
+            if (recycl.isChecked) {
+                if (latas.isChecked || plasticos.isChecked || carton.isChecked || vidrio.isChecked) {
+                    bd.collection("Points").document(login.getUserId()).set(
+                        hashMapOf(
+                            "coordenadas" to latLong,
+                            "recycl" to recycl.isChecked,
+                            "latas" to latas.isChecked,
+                            "plasticos" to plasticos.isChecked,
+                            "carton" to carton.isChecked,
+                            "vidrio" to vidrio.isChecked,
+                            "descripcion" to descripcion.text.toString()
+                        )
+
+                    )
+                    Toast.makeText(this, "Punto agregado", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, MapsActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Debe marcar al menos un tipo de reciclaje",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+        }
+    }
+
+    private fun addReut() {
+
+        if (reut.isChecked) {
+
+
+            if (libros.isChecked || ropa.isChecked || juguetes.isChecked || herramientas.isChecked || componentes.isChecked || otros.isChecked) {
+                bd.collection("Points").document(login.getUserId()).set(
+                    hashMapOf(
+                        "coordenadas" to latLong,
+                        "reut" to reut.isChecked,
+                        "libros" to libros.isChecked,
+                        "ropa" to ropa.isChecked,
+                        "juguetes" to juguetes.isChecked,
+                        "herramientas" to herramientas.isChecked,
+                        "componentes" to componentes.isChecked,
+                        "otros" to otros.isChecked,
+                        "descripcion" to descripcion.text.toString()
+                    )
+
+                )
+                Toast.makeText(this, "Punto agregado", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MapsActivity::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(
+                    this,
+                    "Debe marcar al menos un tipo de reutilización",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+}
+
+
+

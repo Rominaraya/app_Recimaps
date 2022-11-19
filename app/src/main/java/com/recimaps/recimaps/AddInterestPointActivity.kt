@@ -11,10 +11,8 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
-
-
-
-
+import com.recimaps.recimaps.databinding.ActivityAddInterestPointBinding
+import com.recimaps.recimaps.databinding.ActivityProfileBinding
 
 class AddInterestPointActivity : AppCompatActivity(), RadioGroup.OnCheckedChangeListener {
 
@@ -43,13 +41,32 @@ class AddInterestPointActivity : AppCompatActivity(), RadioGroup.OnCheckedChange
     private var login = LoginActivity()
     private var mapsCoord = MapsActivity()
     private val latLong = mapsCoord.getLtLng()
+    private lateinit var binding: ActivityAddInterestPointBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_interest_point)
-        group1?.setOnCheckedChangeListener(this)
+        binding = ActivityAddInterestPointBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        binding.bottomView.setOnItemSelectedListener {
+            val profileInte = Intent(this, ProfileActivity::class.java)
+            val mapsInte = Intent(this, MapsActivity::class.java)
+            val pointInte = Intent(this, AddInterestPointActivity::class.java)
+
+            when(it.itemId){
+
+                R.id.perfil -> startActivity(profileInte)
+                R.id.mapa -> startActivity(mapsInte)
+                R.id.publi -> startActivity(pointInte)
+                else ->{
+                }
+            }
+            true
+        }
+
+        group1?.setOnCheckedChangeListener(this)
         recGroup1 = findViewById(R.id.recLay)
         recGroup2 = findViewById(R.id.recLay2)
         reuGroup1 = findViewById(R.id.reuLay)
@@ -69,10 +86,8 @@ class AddInterestPointActivity : AppCompatActivity(), RadioGroup.OnCheckedChange
         otros = findViewById(R.id.reuTOtros)
         descripcion = findViewById(R.id.pointDescription)
 
-
         savePointButton = findViewById(R.id.savePoint)
         cancelPointButton = findViewById(R.id.cancelAddPoint)
-
 
         cancelPointButton.setOnClickListener {
             val intent = Intent(this, MapsActivity::class.java)
@@ -81,7 +96,6 @@ class AddInterestPointActivity : AppCompatActivity(), RadioGroup.OnCheckedChange
 
 
     }
-
 
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
         when (checkedId) {
@@ -127,10 +141,7 @@ class AddInterestPointActivity : AppCompatActivity(), RadioGroup.OnCheckedChange
     }
 
     private fun addReut() {
-
         if (reut.isChecked) {
-
-
             if (libros.isChecked || ropa.isChecked || juguetes.isChecked || herramientas.isChecked || componentes.isChecked || otros.isChecked) {
                 bd.collection("Points").document(login.getUserId()).set(
                     hashMapOf(

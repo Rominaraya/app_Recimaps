@@ -228,24 +228,36 @@
 
     <Button
         android:id="@+id/cancelAddPoint"
-        android:layout_width="235dp"
-        android:layout_height="79dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="223dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="15dp"
         android:text="Cancelar"
+        app:layout_constraintBottom_toTopOf="@+id/bottomView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/savePoint" />
 
     <Button
         android:id="@+id/savePoint"
-        android:layout_width="234dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="552dp"
+        android:layout_width="223dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="524dp"
         android:text="Agregar Punto"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomView"
+        android:layout_width="0dp"
+        android:layout_height="73dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav">
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -26,7 +25,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
     private var latLong: LatLng? = null
-    private lateinit var addPoint : Button
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
@@ -48,16 +46,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         binding.bottomView.setOnItemSelectedListener {
+            val profileInte = Intent(this, ProfileActivity::class.java)
+            val mapsInte = Intent(this, MapsActivity::class.java)
+            val pointInte = Intent(this, AddInterestPointActivity::class.java)
 
             when(it.itemId){
 
-                R.id.perfil -> replaceFragment(PerfilFragment())
-
+                R.id.perfil -> startActivity(profileInte)
+                R.id.mapa -> startActivity(mapsInte)
+                R.id.publi -> startActivity(pointInte)
                 else ->{
-
-
                 }
             }
             true
@@ -66,16 +65,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-
-        addPoint = findViewById(R.id.cancelAddPoint)
-
-        addPoint.setOnClickListener {
-            val centerLatLang = mMap.projection.visibleRegion.latLngBounds.center
-            saveLtLng(centerLatLang)
-            val intent = Intent(this, AddInterestPointActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     private  fun replaceFragment (fragment: Fragment){
@@ -85,6 +74,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         fragmentTransaction.replace(R.id.frameLayout,fragment)
         fragmentTransaction.commit()
     }
+
     private fun isLocationPermissionGranted()=ContextCompat.checkSelfPermission(
         this,
         Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED
@@ -119,11 +109,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray)
+    {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when(requestCode){
             REQUEST_CODE_LOCATION -> if (grantResults.isNotEmpty() &&
@@ -173,7 +160,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     override fun onMyLocationClick(p0: Location) {
         Toast.makeText(this, "Estas en ${p0.latitude}, ${p0.longitude}.",
-            Toast.LENGTH_SHORT).show()}
+            Toast.LENGTH_SHORT).show()
+    }
 
     private fun tosInt (){
 
@@ -203,7 +191,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     fun getLtLng() : LatLng? {
         return latLong
     }
-
 
 }
 

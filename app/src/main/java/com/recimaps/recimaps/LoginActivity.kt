@@ -64,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
         return userId
     }
     //mantener sesión iniciada
-
+    /* ...
      override fun onStart() {
         super.onStart()
 
@@ -72,6 +72,6 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, MapsActivity::class.java)
             startActivity(intent)
         }
-    }
+    } */
 
 }

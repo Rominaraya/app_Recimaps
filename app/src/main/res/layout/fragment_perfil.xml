@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="2dp"
+    android:background="@color/white"
+    tools:context=".PerfilFragment">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tbMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <ImageView
+        android:id="@+id/ivPerfilMenu"
+        android:layout_width="117dp"
+        android:layout_height="118dp"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="70dp"
+        android:contentDescription="@string/perfilfoto"
+        android:src="@drawable/ic_account_circle" />
+
+    <ImageView
+        android:id="@+id/ivhoja"
+        android:layout_width="56dp"
+        android:layout_height="53dp"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="48dp"
+        android:rotation="-29"
+        android:src="@drawable/hoja_splash"
+        android:contentDescription="@string/hoja_logo" />
+
+    <TextView
+        android:id="@+id/tvNombre"
+        android:layout_width="114dp"
+        android:layout_height="20dp"
+        android:layout_marginHorizontal="180dp"
+        android:layout_marginTop="110dp"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/tvnombreUsuario"
+        android:layout_width="117dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="180dp"
+        android:layout_marginTop="130dp"
+        android:text="" />
+
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:hint="PERFIL"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:minHeight="48dp"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/tvNamePerfil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="275dp"
+        android:layout_marginHorizontal="15dp"
+        android:text="@string/nombre" />
+
+    <TextView
+        android:id="@+id/tvNombreResul"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="305dp"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/tvEmailPerfil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="350dp"
+        android:layout_marginHorizontal="15dp"
+        android:text="@string/correo_electr_nico" />
+
+    <TextView
+        android:id="@+id/tvEmailResul"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="380dp"
+        android:layout_marginHorizontal="15dp"
+        android:text="" />
+
+    <Button
+        android:id="@+id/btnCerrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="180dp"
+        android:text="@string/cerrar_sesi_n"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+
+</FrameLayout>

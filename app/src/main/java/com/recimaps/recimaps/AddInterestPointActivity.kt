@@ -3,7 +3,6 @@ package com.recimaps.recimaps
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.LinearLayout
@@ -17,7 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 
 
-class AddInterestPoint : AppCompatActivity(), RadioGroup.OnCheckedChangeListener {
+class AddInterestPointActivity : AppCompatActivity(), RadioGroup.OnCheckedChangeListener {
 
     private lateinit var recycl: RadioButton
     private lateinit var reut: RadioButton

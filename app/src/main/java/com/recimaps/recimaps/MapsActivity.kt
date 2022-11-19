@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -19,7 +20,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.recimaps.recimaps.databinding.ActivityMapsBinding
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
+    GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -46,21 +48,43 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        binding.bottomView.setOnItemSelectedListener {
+
+            when(it.itemId){
+
+                R.id.perfil -> replaceFragment(PerfilFragment())
+
+                else ->{
+
+
+                }
+            }
+            true
+        }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
 
         addPoint = findViewById(R.id.cancelAddPoint)
 
         addPoint.setOnClickListener {
             val centerLatLang = mMap.projection.visibleRegion.latLngBounds.center
             saveLtLng(centerLatLang)
-            val intent = Intent(this, AddInterestPoint::class.java)
+            val intent = Intent(this, AddInterestPointActivity::class.java)
             startActivity(intent)
         }
     }
 
+    private  fun replaceFragment (fragment: Fragment){
+
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frameLayout,fragment)
+        fragmentTransaction.commit()
+    }
     private fun isLocationPermissionGranted()=ContextCompat.checkSelfPermission(
         this,
         Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED
@@ -85,10 +109,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
     }
 
     private fun requestLocationPermission(){
-        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
-            Toast.makeText(this, "Debes ajustar los permisos de localización", Toast.LENGTH_SHORT).show()
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)){
+            Toast.makeText(this, "Debes ajustar los permisos de localización",
+                Toast.LENGTH_SHORT).show()
         }else{
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),REQUEST_CODE_LOCATION)
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),REQUEST_CODE_LOCATION)
         }
     }
 
@@ -99,7 +126,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when(requestCode){
-            REQUEST_CODE_LOCATION -> if (grantResults.isNotEmpty() && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+            REQUEST_CODE_LOCATION -> if (grantResults.isNotEmpty() &&
+                grantResults[0]==PackageManager.PERMISSION_GRANTED){
                 if (ActivityCompat.checkSelfPermission(
                         this,
                         Manifest.permission.ACCESS_FINE_LOCATION
@@ -112,7 +140,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
                 }
                 mMap.isMyLocationEnabled = true
             }else{
-                Toast.makeText(this, "Ve a los permisos de localización y aceptalos.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Ve a los permisos de localización y aceptalos.",
+                    Toast.LENGTH_SHORT).show()
             }else -> {}
             }
         }
@@ -132,7 +161,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
                 return
             }
             mMap.isMyLocationEnabled = false
-            Toast.makeText(this, "Ve a los permisos de localización y aceptalos.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Ve a los permisos de localización y aceptalos.",
+                Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -142,7 +172,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
     }
 
     override fun onMyLocationClick(p0: Location) {
-        Toast.makeText(this, "Estas en ${p0.latitude}, ${p0.longitude}.", Toast.LENGTH_SHORT).show()}
+        Toast.makeText(this, "Estas en ${p0.latitude}, ${p0.longitude}.",
+            Toast.LENGTH_SHORT).show()}
 
     private fun tosInt (){
 
@@ -172,16 +203,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
     fun getLtLng() : LatLng? {
         return latLong
     }
+
+
 }
 
-
-/**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
 

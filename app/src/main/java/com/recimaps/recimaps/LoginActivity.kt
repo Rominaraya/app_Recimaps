@@ -7,6 +7,7 @@ import android.provider.ContactsContract.CommonDataKinds.Email
 import android.widget.Toast
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.recimaps.recimaps.databinding.ActivityLoginBinding
 import org.w3c.dom.Text
 
@@ -15,8 +16,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var userId: String
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val screenSplash = installSplashScreen()
@@ -65,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
         return userId
     }
     //mantener sesión iniciada
-     /*
+
      override fun onStart() {
         super.onStart()
 
@@ -74,5 +73,5 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-      */
+
 }

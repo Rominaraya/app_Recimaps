@@ -1,20 +1,14 @@
 package com.recimaps.recimaps
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.LinearLayout
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.FirebaseFirestore
 import com.recimaps.recimaps.databinding.ActivityAddInterestPointBinding
-import com.recimaps.recimaps.databinding.ActivityProfileBinding
 
-class AddInterestPointActivity : AppCompatActivity(), RadioGroup.OnCheckedChangeListener {
+class AddInterestPointActivity : AppCompatActivity() {
 
     private lateinit var recycl: RadioButton
     private lateinit var reut: RadioButton
@@ -37,11 +31,10 @@ class AddInterestPointActivity : AppCompatActivity(), RadioGroup.OnCheckedChange
     private lateinit var reuGroup1: LinearLayout
     private lateinit var reuGroup2: LinearLayout
 
-    private val bd = FirebaseFirestore.getInstance()
-    private var login = LoginActivity()
-    private var mapsCoord = MapsActivity()
-    private val latLong = mapsCoord.getLtLng()
+    private var dataBase = FirebaseFirestore.getInstance()
+    private lateinit var mapsCoord: String
     private lateinit var binding: ActivityAddInterestPointBinding
+    private lateinit var email: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,23 +43,27 @@ class AddInterestPointActivity : AppCompatActivity(), RadioGroup.OnCheckedChange
         binding = ActivityAddInterestPointBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val bundle: Bundle? = intent.extras
+        email = bundle?.getString("email").toString()
+
+
+
         binding.bottomView.setOnItemSelectedListener {
             val profileInte = Intent(this, ProfileActivity::class.java)
             val mapsInte = Intent(this, MapsActivity::class.java)
             val pointInte = Intent(this, AddInterestPointActivity::class.java)
 
-            when(it.itemId){
+            when (it.itemId) {
 
                 R.id.perfil -> startActivity(profileInte)
                 R.id.mapa -> startActivity(mapsInte)
                 R.id.publi -> startActivity(pointInte)
-                else ->{
+                else -> {
                 }
             }
             true
         }
 
-        group1?.setOnCheckedChangeListener(this)
         recGroup1 = findViewById(R.id.recLay)
         recGroup2 = findViewById(R.id.recLay2)
         reuGroup1 = findViewById(R.id.reuLay)
@@ -89,41 +86,40 @@ class AddInterestPointActivity : AppCompatActivity(), RadioGroup.OnCheckedChange
         savePointButton = findViewById(R.id.savePoint)
         cancelPointButton = findViewById(R.id.cancelAddPoint)
 
+        val docRef = dataBase.collection("coordenadas").document(email)
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    mapsCoord = document.get("coordenada") as String
+                }
+            }
+
+        val latlong = "-34.8799074,174.7565664".split(",".toRegex()).toTypedArray()
+        val latitude = latlong[0].toDouble()
+        val longitude = latlong[1].toDouble()
+        val location = LatLng(latitude, longitude)
+
         cancelPointButton.setOnClickListener {
             val intent = Intent(this, MapsActivity::class.java)
             startActivity(intent)
         }
 
-
-    }
-
-    override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
-        when (checkedId) {
-            recycl.id -> addRecycl()
-        }
-        when (checkedId) {
-            reut.id -> addReut()
-        }
-
-    }
-
-    private fun addRecycl() {
-
         savePointButton.setOnClickListener {
-
+            Toast.makeText(this, "El Boton fue apretado", Toast.LENGTH_SHORT).show()
             if (recycl.isChecked) {
+                Toast.makeText(this, "Entro a recycl is checked", Toast.LENGTH_SHORT).show()
                 if (latas.isChecked || plasticos.isChecked || carton.isChecked || vidrio.isChecked) {
-                    bd.collection("Points").document(login.getUserId()).set(
+                    Toast.makeText(this, "Entro a latas is checked", Toast.LENGTH_SHORT)
+                        .show()
+                    dataBase.collection("PuntoReci").document(email).set(
                         hashMapOf(
-                            "coordenadas" to latLong,
-                            "recycl" to recycl.isChecked,
+                            "coordenadas" to location,
                             "latas" to latas.isChecked,
                             "plasticos" to plasticos.isChecked,
                             "carton" to carton.isChecked,
                             "vidrio" to vidrio.isChecked,
                             "descripcion" to descripcion.text.toString()
                         )
-
                     )
                     Toast.makeText(this, "Punto agregado", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MapsActivity::class.java)
@@ -135,41 +131,39 @@ class AddInterestPointActivity : AppCompatActivity(), RadioGroup.OnCheckedChange
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            }
-
-        }
-    }
-
-    private fun addReut() {
-        if (reut.isChecked) {
-            if (libros.isChecked || ropa.isChecked || juguetes.isChecked || herramientas.isChecked || componentes.isChecked || otros.isChecked) {
-                bd.collection("Points").document(login.getUserId()).set(
-                    hashMapOf(
-                        "coordenadas" to latLong,
-                        "reut" to reut.isChecked,
-                        "libros" to libros.isChecked,
-                        "ropa" to ropa.isChecked,
-                        "juguetes" to juguetes.isChecked,
-                        "herramientas" to herramientas.isChecked,
-                        "componentes" to componentes.isChecked,
-                        "otros" to otros.isChecked,
-                        "descripcion" to descripcion.text.toString()
+            } else if (reut.isChecked) {
+                if (libros.isChecked || ropa.isChecked || juguetes.isChecked || herramientas.isChecked ||
+                    componentes.isChecked || otros.isChecked
+                ) {
+                    dataBase.collection("PuntoReu").document(email).set(
+                        hashMapOf(
+                            "coordenadas" to location,
+                            "libros" to libros.isChecked,
+                            "ropa" to ropa.isChecked,
+                            "juguetes" to juguetes.isChecked,
+                            "herramientas" to herramientas.isChecked,
+                            "componentes" to componentes.isChecked,
+                            "otros" to otros.isChecked,
+                            "descripcion" to descripcion.text.toString()
+                        )
                     )
-
-                )
-                Toast.makeText(this, "Punto agregado", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, MapsActivity::class.java)
-                startActivity(intent)
-            } else {
-                Toast.makeText(
-                    this,
-                    "Debe marcar al menos un tipo de reutilización",
-                    Toast.LENGTH_SHORT
-                ).show()
+                    Toast.makeText(this, "Punto agregado", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, MapsActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Debe marcar al menos un tipo de reutilización",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
+
     }
 }
+
+
 
 
 

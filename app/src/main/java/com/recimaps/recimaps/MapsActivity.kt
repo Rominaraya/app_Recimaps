@@ -4,10 +4,10 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -17,16 +17,29 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.recimaps.recimaps.databinding.ActivityMapsBinding
+import kotlinx.android.synthetic.main.activity_login.*
+
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
-    private var latLong: LatLng? = null
+    private val dataBase = FirebaseFirestore.getInstance()
+    private lateinit var email : String
+
+
 
     override fun onMapReady(googleMap: GoogleMap) {
+
+        val bundle : Bundle? = intent.extras
+        email = bundle?.getString("email").toString()
+
         mMap = googleMap
         mMap.setMinZoomPreference(11f)
         mMap.setMaxZoomPreference(20f)
@@ -49,13 +62,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         binding.bottomView.setOnItemSelectedListener {
             val profileInte = Intent(this, ProfileActivity::class.java)
             val mapsInte = Intent(this, MapsActivity::class.java)
-            val pointInte = Intent(this, AddInterestPointActivity::class.java)
+            val pointInte = Intent(this, AddInterestPointActivity::class.java).apply {
+                putExtra("email", email)
+            }
+
 
             when(it.itemId){
 
                 R.id.perfil -> startActivity(profileInte)
                 R.id.mapa -> startActivity(mapsInte)
-                R.id.publi -> startActivity(pointInte)
+                R.id.publi -> {
+                    val center = mMap.cameraPosition.target.toString()
+                    addCoords(center)
+                    startActivity(pointInte)
+                }
                 else ->{
                 }
             }
@@ -185,12 +205,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         mMap.addMarker(MarkerOptions().position(tos7).title("Municipalidad de Ñuñoa"))
     }
 
-    private fun saveLtLng(ltLng : LatLng){
-        latLong = ltLng
+
+    private fun addCoords(coord: String) {
+        dataBase.collection("coordenadas").document(email).set(
+            hashMapOf("coordenada" to coord)
+        )
     }
-    fun getLtLng() : LatLng? {
-        return latLong
-    }
+
 
 }
 

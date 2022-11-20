@@ -11,13 +11,14 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.recimaps.recimaps.databinding.ActivityProfileBinding
 
 
 class ProfileActivity : AppCompatActivity() {
 
-    private lateinit var closePointButton: Button
+    private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var binding: ActivityProfileBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +26,8 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        firebaseAuth = FirebaseAuth.getInstance()
 
         binding.bottomView.setOnItemSelectedListener {
             val profileInte = Intent(this, ProfileActivity::class.java)
@@ -42,11 +45,14 @@ class ProfileActivity : AppCompatActivity() {
             true
         }
 
-        closePointButton = findViewById(R.id.closebtn)
-        closePointButton.setOnClickListener {
+        binding.closebtn.setOnClickListener {
+
+            firebaseAuth.signOut()
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
+
         }
+
 
     }
 }

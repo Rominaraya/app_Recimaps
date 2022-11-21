@@ -55,13 +55,13 @@ class AddInterestPointActivity : AppCompatActivity() {
         binding.bottomView.setOnItemSelectedListener {
             val profileInte = Intent(this, ProfileActivity::class.java)
             val mapsInte = Intent(this, MapsActivity::class.java)
-            val pointInte = Intent(this, AddInterestPointActivity::class.java)
+            //val pointInte = Intent(this, AddInterestPointActivity::class.java)
 
             when (it.itemId) {
 
                 R.id.perfil -> startActivity(profileInte)
                 R.id.mapa -> startActivity(mapsInte)
-                R.id.publi -> startActivity(pointInte)
+                //R.id.publi -> startActivity(pointInte)
                 else -> {
                 }
             }

@@ -24,7 +24,6 @@ import com.google.firebase.ktx.Firebase
 import com.recimaps.recimaps.databinding.ActivityMapsBinding
 import kotlinx.android.synthetic.main.activity_login.*
 
-
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
 
@@ -32,8 +31,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     private lateinit var binding: ActivityMapsBinding
     private val dataBase = FirebaseFirestore.getInstance()
     private lateinit var email : String
-
-
 
     override fun onMapReady(googleMap: GoogleMap) {
 
@@ -61,16 +58,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
         binding.bottomView.setOnItemSelectedListener {
             val profileInte = Intent(this, ProfileActivity::class.java)
-            val mapsInte = Intent(this, MapsActivity::class.java)
+            //val mapsInte = Intent(this, MapsActivity::class.java)
             val pointInte = Intent(this, AddInterestPointActivity::class.java).apply {
                 putExtra("email", email)
             }
 
-
             when(it.itemId){
 
                 R.id.perfil -> startActivity(profileInte)
-                R.id.mapa -> startActivity(mapsInte)
+                //R.id.mapa -> startActivity(mapsInte)
                 R.id.publi -> {
                     val center = mMap.cameraPosition.target.toString()
                     addCoords(center)
@@ -205,14 +201,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         mMap.addMarker(MarkerOptions().position(tos7).title("Municipalidad de Ñuñoa"))
     }
 
-
     private fun addCoords(coord: String) {
         dataBase.collection("coordenadas").document(email).set(
             hashMapOf("coordenada" to coord)
         )
     }
 
-
-}
+    }
 
 

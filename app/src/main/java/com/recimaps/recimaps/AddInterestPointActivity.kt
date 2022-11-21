@@ -1,10 +1,12 @@
 package com.recimaps.recimaps
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.recimaps.recimaps.databinding.ActivityAddInterestPointBinding
 
@@ -26,6 +28,7 @@ class AddInterestPointActivity : AppCompatActivity() {
     private lateinit var componentes: CheckBox
     private lateinit var otros: CheckBox
     private lateinit var descripcion: TextView
+    private lateinit var nombre: TextView
     private lateinit var recGroup1: LinearLayout
     private lateinit var recGroup2: LinearLayout
     private lateinit var reuGroup1: LinearLayout
@@ -37,6 +40,7 @@ class AddInterestPointActivity : AppCompatActivity() {
     private lateinit var email: String
 
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_interest_point)
@@ -82,6 +86,7 @@ class AddInterestPointActivity : AppCompatActivity() {
         componentes = findViewById(R.id.reuTComp)
         otros = findViewById(R.id.reuTOtros)
         descripcion = findViewById(R.id.pointDescription)
+        nombre = findViewById(R.id.pointName)
 
         savePointButton = findViewById(R.id.savePoint)
         cancelPointButton = findViewById(R.id.cancelAddPoint)
@@ -105,14 +110,11 @@ class AddInterestPointActivity : AppCompatActivity() {
         }
 
         savePointButton.setOnClickListener {
-            Toast.makeText(this, "El Boton fue apretado", Toast.LENGTH_SHORT).show()
             if (recycl.isChecked) {
-                Toast.makeText(this, "Entro a recycl is checked", Toast.LENGTH_SHORT).show()
                 if (latas.isChecked || plasticos.isChecked || carton.isChecked || vidrio.isChecked) {
-                    Toast.makeText(this, "Entro a latas is checked", Toast.LENGTH_SHORT)
-                        .show()
                     dataBase.collection("PuntoReci").document(email).set(
                         hashMapOf(
+                            "nombre" to nombre.text.toString(),
                             "coordenadas" to location,
                             "latas" to latas.isChecked,
                             "plasticos" to plasticos.isChecked,
@@ -137,6 +139,7 @@ class AddInterestPointActivity : AppCompatActivity() {
                 ) {
                     dataBase.collection("PuntoReu").document(email).set(
                         hashMapOf(
+                            "nombre" to nombre.text.toString(),
                             "coordenadas" to location,
                             "libros" to libros.isChecked,
                             "ropa" to ropa.isChecked,

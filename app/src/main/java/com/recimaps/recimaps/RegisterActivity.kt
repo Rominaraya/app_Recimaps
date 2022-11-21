@@ -30,12 +30,16 @@ class RegisterActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.btnSend.setOnClickListener {
-            val nombre = binding.editTextTextPersonName.text.toString()
+            val nombre = binding.etNameComplet.text.toString()
+            val nombreUser = binding.etPersonName.text.toString()
             val email = binding.etEmailAddress.text.toString()
             val pass = binding.etPassword.text.toString()
             val confirmPass = binding.etConfirmation.text.toString()
 
-            if (nombre.isNotEmpty() && email.isNotEmpty() && pass.isNotEmpty() && confirmPass.isNotEmpty()){
+
+
+            if (nombre.isNotEmpty() && nombreUser.isNotEmpty()  && email.isNotEmpty()
+                && pass.isNotEmpty() && confirmPass.isNotEmpty()){
                 val len = pass.length
                 fun numberOnPassword(pass:String):Boolean {
                     var check = false
@@ -56,11 +60,16 @@ class RegisterActivity : AppCompatActivity() {
                             .addOnCompleteListener {
                                 if (it.isSuccessful) {
 
-                                    bd.collection("users").document(email).set(
+                                    val user = firebaseAuth.currentUser
+                                    val uid = user!!.uid
+
+                                    bd.collection("users").document(uid).set(
                                         hashMapOf("Nombre" to nombre,
-                                        "Email" to email)
+                                            "Nombre Usuario" to nombreUser,
+                                            "Email" to email)
                                     )
-                                    Toast.makeText(this, "Registro Listo!", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this, "Registro Listo!",
+                                        Toast.LENGTH_SHORT).show()
 
 
                                 } else {
@@ -72,15 +81,19 @@ class RegisterActivity : AppCompatActivity() {
                                 }
                             }
                     } else {
-                        Toast.makeText(this, "Las contraseñas no coincide", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Las contraseñas no coincide",
+                            Toast.LENGTH_SHORT).show()
                     }
                 }
                 else {
-                    Toast.makeText( this , "La contraseña debe tener al menos 8 digitos y al menos un numero" , Toast.LENGTH_SHORT).show()
+                    Toast.makeText( this ,
+                        "La contraseña debe tener al menos 8 digitos y al menos un numero" ,
+                        Toast.LENGTH_SHORT).show()
                 }
 
             }else{
-                Toast.makeText( this , "No se permiten campos vacíos" , Toast.LENGTH_SHORT).show()
+                Toast.makeText( this , "No se permiten campos vacíos" ,
+                    Toast.LENGTH_SHORT).show()
             }
         }
     }

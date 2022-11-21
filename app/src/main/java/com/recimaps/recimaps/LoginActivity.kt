@@ -11,12 +11,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.recimaps.recimaps.databinding.ActivityLoginBinding
 import org.w3c.dom.Text
 
-
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var firebaseAuth: FirebaseAuth
-
+    private lateinit var userId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val screenSplash = installSplashScreen()
@@ -43,9 +42,8 @@ class LoginActivity : AppCompatActivity() {
 
                 firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
                     if (it.isSuccessful){
-                        val intent = Intent(this, MapsActivity::class.java).apply {
-                            putExtra("email", email)
-                        }
+                        val intent = Intent(this, MapsActivity::class.java)
+                        reciveId(email)
                         startActivity(intent)
                     } else{
                         Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
@@ -56,8 +54,16 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
-    //mantener sesión iniciada
-    /* ...
+
+    private fun reciveId(id: String){
+        val recivedId = id
+        userId = recivedId
+
+    }
+    fun getUserId():String{
+        return userId
+    }
+
      override fun onStart() {
         super.onStart()
 
@@ -65,6 +71,6 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, MapsActivity::class.java)
             startActivity(intent)
         }
-    } */
+    }
 
 }

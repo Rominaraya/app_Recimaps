@@ -29,4 +29,5 @@
     <string name="perfilfoto">perfilfoto</string>
     <string name="perfil">Perfil</string>
     <string name="Perfil" />
+    <string name="nombre_completo">Nombre Completo</string>
 </resources>

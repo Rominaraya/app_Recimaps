@@ -99,10 +99,7 @@ class AddInterestPointActivity : AppCompatActivity() {
                 }
             }
 
-        val latlong = "-34.8799074,174.7565664".split(",".toRegex()).toTypedArray()
-        val latitude = latlong[0].toDouble()
-        val longitude = latlong[1].toDouble()
-        val location = LatLng(latitude, longitude)
+
 
         cancelPointButton.setOnClickListener {
             val intent = Intent(this, MapsActivity::class.java)
@@ -110,9 +107,15 @@ class AddInterestPointActivity : AppCompatActivity() {
         }
 
         savePointButton.setOnClickListener {
+            val removeChar ="lat/ng:()"
+            removeChar.forEach { mapsCoord = mapsCoord.replace(it.toString(), "") }
+            val latlong = mapsCoord.split(",".toRegex()).toTypedArray()
+            val latitude = latlong[0].toDouble()
+            val longitude = latlong[1].toDouble()
+            val location = LatLng(latitude, longitude)
             if (recycl.isChecked) {
                 if (latas.isChecked || plasticos.isChecked || carton.isChecked || vidrio.isChecked) {
-                    dataBase.collection("PuntoReci").document(email).set(
+                    dataBase.collection("PuntoReci").document(mapsCoord).set(
                         hashMapOf(
                             "nombre" to nombre.text.toString(),
                             "coordenadas" to location,
@@ -138,7 +141,7 @@ class AddInterestPointActivity : AppCompatActivity() {
                 if (libros.isChecked || ropa.isChecked || juguetes.isChecked || herramientas.isChecked ||
                     componentes.isChecked || otros.isChecked
                 ) {
-                    dataBase.collection("PuntoReu").document(email).set(
+                    dataBase.collection("PuntoReu").document(mapsCoord).set(
                         hashMapOf(
                             "nombre" to nombre.text.toString(),
                             "coordenadas" to location,

@@ -124,6 +124,7 @@ class AddInterestPointActivity : AppCompatActivity() {
                         )
                     )
                     Toast.makeText(this, "Punto agregado", Toast.LENGTH_SHORT).show()
+                    dataBase.collection("coordenadas").document(email).delete()
                     val intent = Intent(this, MapsActivity::class.java)
                     startActivity(intent)
                 } else {
@@ -150,6 +151,7 @@ class AddInterestPointActivity : AppCompatActivity() {
                             "descripcion" to descripcion.text.toString()
                         )
                     )
+                    dataBase.collection("coordenadas").document(email).delete()
                     Toast.makeText(this, "Punto agregado", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MapsActivity::class.java)
                     startActivity(intent)

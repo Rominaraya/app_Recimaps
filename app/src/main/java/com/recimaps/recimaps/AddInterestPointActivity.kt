@@ -114,7 +114,8 @@ class AddInterestPointActivity : AppCompatActivity() {
             val longitude = latlong[1].toDouble()
             val location = LatLng(latitude, longitude)
             if (recycl.isChecked) {
-                if (latas.isChecked || plasticos.isChecked || carton.isChecked || vidrio.isChecked) {
+                if (latas.isChecked || plasticos.isChecked || carton.isChecked || vidrio.isChecked)
+                {
                     dataBase.collection("PuntoReci").document(mapsCoord).set(
                         hashMapOf(
                             "nombre" to nombre.text.toString(),

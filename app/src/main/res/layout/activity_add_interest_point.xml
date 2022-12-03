@@ -9,17 +9,28 @@
 
 
     <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="816dp"
+        android:layout_width="408dp"
+        android:layout_height="862dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_titulo"
+                android:layout_width="232dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="20dp"
+                android:text="Crear Punto de reciclaje"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/pointName"
@@ -36,6 +47,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+
 
             <TextView
                 android:id="@+id/pointType"
@@ -244,13 +257,17 @@
                     android:id="@+id/savePoint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Añadir Punto" />
+                    android:text="Añadir Punto"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    app:cornerRadius="20dp" />
 
                 <Button
                     android:id="@+id/cancelAddPoint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Cancelar" />
+                    android:text="Cancelar"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    app:cornerRadius="20dp" />
             </LinearLayout>
 
         </LinearLayout>

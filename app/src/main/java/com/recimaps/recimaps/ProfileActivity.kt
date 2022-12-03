@@ -15,7 +15,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.recimaps.recimaps.databinding.ActivityProfileBinding
 
-
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var firebaseAuth: FirebaseAuth
@@ -48,7 +47,6 @@ class ProfileActivity : AppCompatActivity() {
             true
         }
 
-
         val user = firebaseAuth.currentUser
         val uid = user!!.uid
 
@@ -59,7 +57,6 @@ class ProfileActivity : AppCompatActivity() {
             binding.tvNombrePerfil2.text = (it.get("Nombre") as String?)
             binding.tvCorreoPerfil.text = (it.get("Email") as String?)
         }
-
 
         binding.closebtn.setOnClickListener {
 

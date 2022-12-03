@@ -19,6 +19,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.recimaps.recimaps.databinding.ActivityMapsBinding
 import kotlinx.android.synthetic.main.activity_login.*
+import java.util.*
+import kotlin.concurrent.schedule
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
@@ -26,23 +28,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
     private val dataBase = FirebaseFirestore.getInstance()
-    private lateinit var email : String
+    private lateinit var email: String
 
     override fun onMapReady(googleMap: GoogleMap) {
 
-        val bundle : Bundle? = intent.extras
+        val bundle: Bundle? = intent.extras
         email = bundle?.getString("email").toString()
 
         mMap = googleMap
         mMap.setMinZoomPreference(11f)
         mMap.setMaxZoomPreference(20f)
-        tosInt ()
+        tosInt()
         enableLocation()
         mMap.setOnMyLocationButtonClickListener(this)
         mMap.setOnMyLocationClickListener(this)
     }
 
-    companion object{
+    companion object {
         const val REQUEST_CODE_LOCATION = 0
     }
 
@@ -59,24 +61,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                 putExtra("email", email)
             }
 
-            when(it.itemId){
-
+            when (it.itemId) {
                 R.id.perfil -> startActivity(profileInte)
                 R.id.publi -> {
-                  val tos = mMap.cameraPosition.target
-                    mMap.addMarker(MarkerOptions()
-                        .position(tos)
-                        .draggable(true))
+                    val tos = mMap.cameraPosition.target
+                    mMap.addMarker(
+                        MarkerOptions()
+                            .position(tos)
+                            .draggable(true)
+                    )
                     val center = tos.toString()
                     addCoords(center)
-                    startActivity(pointInte)
+                    Timer("SettingUp", false).schedule(500) {
+                        startActivity(pointInte)
+                    }
                 }
-                else ->{
+                else -> {
                 }
-
             }
             true
-
         }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -84,21 +87,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         mapFragment.getMapAsync(this)
     }
 
-    private  fun replaceFragment (fragment: Fragment){
+    private fun replaceFragment(fragment: Fragment) {
 
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frameLayout,fragment)
+        fragmentTransaction.replace(R.id.frameLayout, fragment)
         fragmentTransaction.commit()
     }
 
-    private fun isLocationPermissionGranted()=ContextCompat.checkSelfPermission(
+    private fun isLocationPermissionGranted() = ContextCompat.checkSelfPermission(
         this,
-        Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED
+        Manifest.permission.ACCESS_FINE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED
 
-    private fun enableLocation(){
-        if(!::mMap.isInitialized)return
-        if(isLocationPermissionGranted()) {
+    private fun enableLocation() {
+        if (!::mMap.isInitialized) return
+        if (isLocationPermissionGranted()) {
             if (ActivityCompat.checkSelfPermission(
                     this,
                     Manifest.permission.ACCESS_FINE_LOCATION
@@ -110,28 +114,39 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                 return
             }
             mMap.isMyLocationEnabled = true
-        }else{
+        } else {
             requestLocationPermission()
         }
     }
 
-    private fun requestLocationPermission(){
-        if(ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)){
-            Toast.makeText(this, "Debes ajustar los permisos de localización",
-                Toast.LENGTH_SHORT).show()
-        }else{
-            ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),REQUEST_CODE_LOCATION)
+    private fun requestLocationPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        ) {
+            Toast.makeText(
+                this, "Debes ajustar los permisos de localización",
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_LOCATION
+            )
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray)
-    {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when(requestCode){
+        when (requestCode) {
             REQUEST_CODE_LOCATION -> if (grantResults.isNotEmpty() &&
-                grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                grantResults[0] == PackageManager.PERMISSION_GRANTED
+            ) {
                 if (ActivityCompat.checkSelfPermission(
                         this,
                         Manifest.permission.ACCESS_FINE_LOCATION
@@ -143,17 +158,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                     return
                 }
                 mMap.isMyLocationEnabled = true
-            }else{
-                Toast.makeText(this, "Ve a los permisos de localización y aceptalos.",
-                    Toast.LENGTH_SHORT).show()
-            }else -> {}
+            } else {
+                Toast.makeText(
+                    this, "Ve a los permisos de localización y aceptalos.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
+            else -> {}
         }
+    }
 
     override fun onResumeFragments() {
         super.onResumeFragments()
-        if(!::mMap.isInitialized)return
-        if(!isLocationPermissionGranted()) {
+        if (!::mMap.isInitialized) return
+        if (!isLocationPermissionGranted()) {
             if (ActivityCompat.checkSelfPermission(
                     this,
                     Manifest.permission.ACCESS_FINE_LOCATION
@@ -165,8 +183,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                 return
             }
             mMap.isMyLocationEnabled = false
-            Toast.makeText(this, "Ve a los permisos de localización y aceptalos.",
-                Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this, "Ve a los permisos de localización y aceptalos.",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -176,18 +196,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     override fun onMyLocationClick(p0: Location) {
-        Toast.makeText(this, "Estas en ${p0.latitude}, ${p0.longitude}.",
-            Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            this, "Estas en ${p0.latitude}, ${p0.longitude}.",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
-
-
-    private fun tosInt (){
+    private fun tosInt() {
 
         val tos = LatLng(-33.4912422, -70.5935661)
         mMap.addMarker(MarkerOptions().position(tos).title("Punto limpio"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(tos))
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(tos,13f), 1,null)
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(tos, 13f), 1, null)
         val tos1 = LatLng(-33.43788, -70.58087)
         mMap.addMarker(MarkerOptions().position(tos1).title("Recieco"))
         val tos2 = LatLng(-33.4656328, -70.6000689)
@@ -210,6 +230,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         )
     }
 
-    }
+}
 
 

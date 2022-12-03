@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -17,10 +16,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import com.recimaps.recimaps.databinding.ActivityMapsBinding
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -66,16 +62,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
             when(it.itemId){
 
                 R.id.perfil -> startActivity(profileInte)
-                //R.id.mapa -> startActivity(mapsInte)
                 R.id.publi -> {
-                    val center = mMap.cameraPosition.target.toString()
+                  val tos = mMap.cameraPosition.target
+                    mMap.addMarker(MarkerOptions()
+                        .position(tos)
+                        .draggable(true))
+                    val center = tos.toString()
                     addCoords(center)
                     startActivity(pointInte)
                 }
                 else ->{
                 }
+
             }
             true
+
         }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -178,6 +179,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         Toast.makeText(this, "Estas en ${p0.latitude}, ${p0.longitude}.",
             Toast.LENGTH_SHORT).show()
     }
+
+
 
     private fun tosInt (){
 

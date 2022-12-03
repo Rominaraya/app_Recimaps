@@ -50,8 +50,6 @@ class AddInterestPointActivity : AppCompatActivity() {
         val bundle: Bundle? = intent.extras
         email = bundle?.getString("email").toString()
 
-
-
         binding.bottomView.setOnItemSelectedListener {
             val profileInte = Intent(this, ProfileActivity::class.java)
             val mapsInte = Intent(this, MapsActivity::class.java)

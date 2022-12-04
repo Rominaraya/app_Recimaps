@@ -1,10 +1,12 @@
 package com.recimaps.recimaps
 
 import android.Manifest
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -15,26 +17,43 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.recimaps.recimaps.databinding.ActivityMapsBinding
-import kotlinx.android.synthetic.main.activity_login.*
 import java.util.*
 import kotlin.concurrent.schedule
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
 
+    private val mMarkers = HashMap<String, Marker>()
+
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
     private val dataBase = FirebaseFirestore.getInstance()
-    private lateinit var email: String
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var email :String
+    private lateinit var db : DatabaseReference
+
 
     override fun onMapReady(googleMap: GoogleMap) {
 
-        val bundle: Bundle? = intent.extras
-        email = bundle?.getString("email").toString()
 
+        firebaseAuth = FirebaseAuth.getInstance()
+        db = Firebase.database.reference
+        val user = firebaseAuth.currentUser
+        email = user!!.uid
         mMap = googleMap
         mMap.setMinZoomPreference(11f)
         mMap.setMaxZoomPreference(20f)
@@ -42,11 +61,29 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         enableLocation()
         mMap.setOnMyLocationButtonClickListener(this)
         mMap.setOnMyLocationClickListener(this)
+       // subscribeToUpdate()
     }
 
     companion object {
         const val REQUEST_CODE_LOCATION = 0
     }
+
+   /* private fun subscribeToUpdate() {
+        val ref = FirebaseDatabase.getInstance().reference.child("locations")
+        ref.addValueEventListener(object : ValueEventListener
+        {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (docs in snapshot.children){
+                    listarMarcadores(docs)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,20 +94,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         binding.bottomView.setOnItemSelectedListener {
             val profileInte = Intent(this, ProfileActivity::class.java)
             //val mapsInte = Intent(this, MapsActivity::class.java)
-            val pointInte = Intent(this, AddInterestPointActivity::class.java).apply {
-                putExtra("email", email)
-            }
+            val pointInte = Intent(this, AddInterestPointActivity::class.java)
 
             when (it.itemId) {
                 R.id.perfil -> startActivity(profileInte)
                 R.id.publi -> {
                     val tos = mMap.cameraPosition.target
-                    mMap.addMarker(
+                    /*mMap.addMarker(
                         MarkerOptions()
                             .position(tos)
                             .draggable(true)
-                    )
-                    val center = tos.toString()
+                    )*/
+                    val center = tos
                     addCoords(center)
                     Timer("SettingUp", false).schedule(500) {
                         startActivity(pointInte)
@@ -167,6 +202,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
             else -> {}
         }
     }
+   /* private fun listarMarcadores(dataSnapshot: DataSnapshot) {
+        try {
+            val key = dataSnapshot.key
+            val value = dataSnapshot.value as HashMap<*, *>?
+            val lat: Double = value!!["latitud"].toString().toDouble()
+            val lon: Double = value["longitud"].toString().toDouble()
+            val ubicacion = LatLng(lat, lon)
+            val mimarker: Marker?
+            if (!mMarkers.containsKey(key)) {
+                mimarker = mMap.addMarker(MarkerOptions().title(key).position(ubicacion))
+                mMarkers[key!!] = mimarker!!
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this, "Error al listar marcadores", Toast.LENGTH_SHORT).show()
+        }
+    }*/
+
 
     override fun onResumeFragments() {
         super.onResumeFragments()
@@ -208,7 +260,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         mMap.addMarker(MarkerOptions().position(tos).title("Punto limpio"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(tos))
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(tos, 13f), 1, null)
-        val tos1 = LatLng(-33.43788, -70.58087)
+        /*val tos1 = LatLng(-33.43788, -70.58087)
         mMap.addMarker(MarkerOptions().position(tos1).title("Recieco"))
         val tos2 = LatLng(-33.4656328, -70.6000689)
         mMap.addMarker(MarkerOptions().position(tos2).title("Circular"))
@@ -221,12 +273,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         val tos6 = LatLng(-33.4551468, -70.592697)
         mMap.addMarker(MarkerOptions().position(tos6).title("Sin Envase"))
         val tos7 = LatLng(-33.4520164, -70.5939894)
-        mMap.addMarker(MarkerOptions().position(tos7).title("Municipalidad de Ñuñoa"))
+        mMap.addMarker(MarkerOptions().position(tos7).title("Municipalidad de Ñuñoa"))*/
     }
 
-    private fun addCoords(coord: String) {
-        dataBase.collection("coordenadas").document(email).set(
-            hashMapOf("coordenada" to coord)
+    private fun addCoords(coord: LatLng) {
+        val removeChar ="lat/ng:()"
+        var mapsCoord: String
+        mapsCoord = coord.toString()
+        removeChar.forEach { mapsCoord = mapsCoord.replace(it.toString(), "") }
+        val latlong = mapsCoord.split(",".toRegex()).toTypedArray()
+        val latitude = latlong[0]
+        val longitude = latlong[1]
+
+        dataBase.collection("locations").document(mapsCoord).set(
+            hashMapOf(
+            "latitud" to latitude,
+            "longitud" to longitude)
+        )
+
+        dataBase.collection("temp").document(email).set(
+            hashMapOf("latitud" to latitude,
+                "longitud" to longitude)
         )
     }
 

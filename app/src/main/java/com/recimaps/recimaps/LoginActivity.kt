@@ -43,8 +43,6 @@ class LoginActivity : AppCompatActivity() {
                 firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
                     if (it.isSuccessful){
                         val intent = Intent(this, MapsActivity::class.java)
-                        reciveId(email)
-                        startActivity(intent)
                     } else{
                         Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
                     }
@@ -53,15 +51,6 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText( this , "No se permiten campos vacíos" , Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    private fun reciveId(id: String){
-        val recivedId = id
-        userId = recivedId
-
-    }
-    fun getUserId():String{
-        return userId
     }
 
      override fun onStart() {

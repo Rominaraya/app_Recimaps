@@ -7,6 +7,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.recimaps.recimaps.databinding.ActivityAddInterestPointBinding
 
@@ -34,10 +35,13 @@ class AddInterestPointActivity : AppCompatActivity() {
     private lateinit var reuGroup1: LinearLayout
     private lateinit var reuGroup2: LinearLayout
 
+    private var lat : Double = 0.0
+    private var lon : Double = 0.0
+
     private var dataBase = FirebaseFirestore.getInstance()
-    private lateinit var mapsCoord: String
     private lateinit var binding: ActivityAddInterestPointBinding
-    private lateinit var email: String
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var email :String
 
 
     @SuppressLint("MissingInflatedId")
@@ -46,9 +50,9 @@ class AddInterestPointActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_interest_point)
         binding = ActivityAddInterestPointBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val bundle: Bundle? = intent.extras
-        email = bundle?.getString("email").toString()
+        firebaseAuth = FirebaseAuth.getInstance()
+        val user = firebaseAuth.currentUser
+        email = user!!.uid
 
         binding.bottomView.setOnItemSelectedListener {
             val profileInte = Intent(this, ProfileActivity::class.java)
@@ -89,11 +93,12 @@ class AddInterestPointActivity : AppCompatActivity() {
         savePointButton = findViewById(R.id.savePoint)
         cancelPointButton = findViewById(R.id.cancelAddPoint)
 
-        val docRef = dataBase.collection("coordenadas").document(email)
+        val docRef = dataBase.collection("temp").document(email)
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.exists()) {
-                    mapsCoord = document.get("coordenada") as String
+                   lat = document.get("latitud").toString().toDouble()
+                   lon = document.get("longitud").toString().toDouble()
                 }
             }
 
@@ -105,16 +110,13 @@ class AddInterestPointActivity : AppCompatActivity() {
         }
 
         savePointButton.setOnClickListener {
-            val removeChar ="lat/ng:()"
-            removeChar.forEach { mapsCoord = mapsCoord.replace(it.toString(), "") }
-            val latlong = mapsCoord.split(",".toRegex()).toTypedArray()
-            val latitude = latlong[0].toDouble()
-            val longitude = latlong[1].toDouble()
-            val location = LatLng(latitude, longitude)
+
+            val location = LatLng(lat, lon)
+
             if (recycl.isChecked) {
                 if (latas.isChecked || plasticos.isChecked || carton.isChecked || vidrio.isChecked)
                 {
-                    dataBase.collection("PuntoReci").document(mapsCoord).set(
+                    dataBase.collection("PuntoReci").document("$lat,$lon").set(
                         hashMapOf(
                             "nombre" to nombre.text.toString(),
                             "coordenadas" to location,
@@ -126,7 +128,7 @@ class AddInterestPointActivity : AppCompatActivity() {
                         )
                     )
                     Toast.makeText(this, "Punto agregado", Toast.LENGTH_SHORT).show()
-                    dataBase.collection("coordenadas").document(email).delete()
+                    dataBase.collection("temp").document(email).delete()
                     val intent = Intent(this, MapsActivity::class.java)
                     startActivity(intent)
                 } else {
@@ -140,7 +142,7 @@ class AddInterestPointActivity : AppCompatActivity() {
                 if (libros.isChecked || ropa.isChecked || juguetes.isChecked || herramientas.isChecked ||
                     componentes.isChecked || otros.isChecked
                 ) {
-                    dataBase.collection("PuntoReu").document(mapsCoord).set(
+                    dataBase.collection("PuntoReu").document("$lat,$lon").set(
                         hashMapOf(
                             "nombre" to nombre.text.toString(),
                             "coordenadas" to location,
@@ -153,8 +155,8 @@ class AddInterestPointActivity : AppCompatActivity() {
                             "descripcion" to descripcion.text.toString()
                         )
                     )
-                    dataBase.collection("coordenadas").document(email).delete()
                     Toast.makeText(this, "Punto agregado", Toast.LENGTH_SHORT).show()
+                    dataBase.collection("temp").document(email).delete()
                     val intent = Intent(this, MapsActivity::class.java)
                     startActivity(intent)
                 } else {

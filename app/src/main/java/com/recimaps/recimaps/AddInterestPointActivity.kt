@@ -13,9 +13,6 @@ import com.recimaps.recimaps.databinding.ActivityAddInterestPointBinding
 
 class AddInterestPointActivity : AppCompatActivity() {
 
-    private lateinit var recycl: RadioButton
-    private lateinit var reut: RadioButton
-    private var group1: RadioGroup? = null
     private lateinit var savePointButton: Button
     private lateinit var cancelPointButton: Button
     private lateinit var latas: CheckBox
@@ -74,9 +71,6 @@ class AddInterestPointActivity : AppCompatActivity() {
         recGroup2 = findViewById(R.id.recLay2)
         reuGroup1 = findViewById(R.id.reuLay)
         reuGroup2 = findViewById(R.id.reuLay2)
-        group1 = findViewById(R.id.rGroup)
-        recycl = findViewById(R.id.recycling)
-        reut = findViewById(R.id.reutilization)
         latas = findViewById(R.id.recTLatas)
         plasticos = findViewById(R.id.recTPlast)
         carton = findViewById(R.id.recTCart)
@@ -97,8 +91,8 @@ class AddInterestPointActivity : AppCompatActivity() {
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.exists()) {
-                   lat = document.get("latitud").toString().toDouble()
-                   lon = document.get("longitud").toString().toDouble()
+                    lat = document.get("latitud").toString().toDouble()
+                    lon = document.get("longitud").toString().toDouble()
                 }
             }
 
@@ -113,61 +107,39 @@ class AddInterestPointActivity : AppCompatActivity() {
 
             val location = LatLng(lat, lon)
 
-            if (recycl.isChecked) {
-                if (latas.isChecked || plasticos.isChecked || carton.isChecked || vidrio.isChecked)
-                {
-                    dataBase.collection("PuntoReci").document("$lat,$lon").set(
-                        hashMapOf(
-                            "nombre" to nombre.text.toString(),
-                            "coordenadas" to location,
-                            "latas" to latas.isChecked,
-                            "plasticos" to plasticos.isChecked,
-                            "carton" to carton.isChecked,
-                            "vidrio" to vidrio.isChecked,
-                            "descripcion" to descripcion.text.toString()
-                        )
+            if (latas.isChecked || plasticos.isChecked || carton.isChecked || vidrio.isChecked ||
+                libros.isChecked || ropa.isChecked || juguetes.isChecked || herramientas.isChecked ||
+                componentes.isChecked || otros.isChecked) {
+                dataBase.collection("PuntoReci").document("$lat,$lon").set(
+                    hashMapOf(
+                        "nombre" to nombre.text.toString(),
+                        "coordenadas" to location,
+                        "latas" to latas.isChecked,
+                        "plasticos" to plasticos.isChecked,
+                        "carton" to carton.isChecked,
+                        "vidrio" to vidrio.isChecked,
+                        "libros" to libros.isChecked,
+                        "ropa" to ropa.isChecked,
+                        "juguetes" to juguetes.isChecked,
+                        "herramientas" to herramientas.isChecked,
+                        "componentes" to componentes.isChecked,
+                        "otros" to otros.isChecked,
+                        "descripcion" to descripcion.text.toString()
                     )
-                    Toast.makeText(this, "Punto agregado", Toast.LENGTH_SHORT).show()
-                    dataBase.collection("temp").document(email).delete()
-                    val intent = Intent(this, MapsActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(
-                        this,
-                        "Debe marcar al menos un tipo de reciclaje",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            } else if (reut.isChecked) {
-                if (libros.isChecked || ropa.isChecked || juguetes.isChecked || herramientas.isChecked ||
-                    componentes.isChecked || otros.isChecked
-                ) {
-                    dataBase.collection("PuntoReu").document("$lat,$lon").set(
-                        hashMapOf(
-                            "nombre" to nombre.text.toString(),
-                            "coordenadas" to location,
-                            "libros" to libros.isChecked,
-                            "ropa" to ropa.isChecked,
-                            "juguetes" to juguetes.isChecked,
-                            "herramientas" to herramientas.isChecked,
-                            "componentes" to componentes.isChecked,
-                            "otros" to otros.isChecked,
-                            "descripcion" to descripcion.text.toString()
-                        )
-                    )
-                    Toast.makeText(this, "Punto agregado", Toast.LENGTH_SHORT).show()
-                    dataBase.collection("temp").document(email).delete()
-                    val intent = Intent(this, MapsActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(
-                        this,
-                        "Debe marcar al menos un tipo de reutilización",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                )
+                Toast.makeText(this, "Punto agregado", Toast.LENGTH_SHORT).show()
+                dataBase.collection("temp").document(email).delete()
+                val intent = Intent(this, MapsActivity::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(
+                    this,
+                    "Debe marcar al menos un tipo de reciclaje",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
+
 
     }
 }

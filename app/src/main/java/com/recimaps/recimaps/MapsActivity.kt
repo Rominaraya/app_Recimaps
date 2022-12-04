@@ -35,9 +35,11 @@ import java.util.*
 import kotlin.concurrent.schedule
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
-    GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
+    GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener,
+    GoogleMap.OnMarkerClickListener{
 
     private val mMarkers = HashMap<String, Marker>()
+    private var markerTos: Marker? = null
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -49,7 +51,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     override fun onMapReady(googleMap: GoogleMap) {
 
-
         firebaseAuth = FirebaseAuth.getInstance()
         db = Firebase.database.reference
         val user = firebaseAuth.currentUser
@@ -57,33 +58,33 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         mMap = googleMap
         mMap.setMinZoomPreference(11f)
         mMap.setMaxZoomPreference(20f)
-        tosInt()
+        tosInt(mMap)
         enableLocation()
         mMap.setOnMyLocationButtonClickListener(this)
         mMap.setOnMyLocationClickListener(this)
-       // subscribeToUpdate()
+        // subscribeToUpdate()
     }
 
     companion object {
         const val REQUEST_CODE_LOCATION = 0
     }
 
-   /* private fun subscribeToUpdate() {
-        val ref = FirebaseDatabase.getInstance().reference.child("locations")
-        ref.addValueEventListener(object : ValueEventListener
-        {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (docs in snapshot.children){
-                    listarMarcadores(docs)
-                }
-            }
+    /* private fun subscribeToUpdate() {
+         val ref = FirebaseDatabase.getInstance().reference.child("locations")
+         ref.addValueEventListener(object : ValueEventListener
+         {
+             override fun onDataChange(snapshot: DataSnapshot) {
+                 for (docs in snapshot.children){
+                     listarMarcadores(docs)
+                 }
+             }
 
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
+             override fun onCancelled(error: DatabaseError) {
+                 TODO("Not yet implemented")
+             }
 
-        })
-    }*/
+         })
+     }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -202,22 +203,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
             else -> {}
         }
     }
-   /* private fun listarMarcadores(dataSnapshot: DataSnapshot) {
-        try {
-            val key = dataSnapshot.key
-            val value = dataSnapshot.value as HashMap<*, *>?
-            val lat: Double = value!!["latitud"].toString().toDouble()
-            val lon: Double = value["longitud"].toString().toDouble()
-            val ubicacion = LatLng(lat, lon)
-            val mimarker: Marker?
-            if (!mMarkers.containsKey(key)) {
-                mimarker = mMap.addMarker(MarkerOptions().title(key).position(ubicacion))
-                mMarkers[key!!] = mimarker!!
-            }
-        } catch (e: Exception) {
-            Toast.makeText(this, "Error al listar marcadores", Toast.LENGTH_SHORT).show()
-        }
-    }*/
+    /* private fun listarMarcadores(dataSnapshot: DataSnapshot) {
+         try {
+             val key = dataSnapshot.key
+             val value = dataSnapshot.value as HashMap<*, *>?
+             val lat: Double = value!!["latitud"].toString().toDouble()
+             val lon: Double = value["longitud"].toString().toDouble()
+             val ubicacion = LatLng(lat, lon)
+             val mimarker: Marker?
+             if (!mMarkers.containsKey(key)) {
+                 mimarker = mMap.addMarker(MarkerOptions().title(key).position(ubicacion))
+                 mMarkers[key!!] = mimarker!!
+             }
+         } catch (e: Exception) {
+             Toast.makeText(this, "Error al listar marcadores", Toast.LENGTH_SHORT).show()
+         }
+     }*/
 
 
     override fun onResumeFragments() {
@@ -254,12 +255,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         ).show()
     }
 
-    private fun tosInt() {
+    private fun tosInt(mMap: GoogleMap) {
 
         val tos = LatLng(-33.4912422, -70.5935661)
-        mMap.addMarker(MarkerOptions().position(tos).title("Punto limpio"))
+        markerTos=mMap.addMarker(MarkerOptions().position(tos).title("Punto limpio"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(tos))
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(tos, 13f), 1, null)
+        markerTos?.tag = 0
         /*val tos1 = LatLng(-33.43788, -70.58087)
         mMap.addMarker(MarkerOptions().position(tos1).title("Recieco"))
         val tos2 = LatLng(-33.4656328, -70.6000689)
@@ -274,6 +276,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         mMap.addMarker(MarkerOptions().position(tos6).title("Sin Envase"))
         val tos7 = LatLng(-33.4520164, -70.5939894)
         mMap.addMarker(MarkerOptions().position(tos7).title("Municipalidad de Ñuñoa"))*/
+        mMap.setOnMarkerClickListener(this)
+
     }
 
     private fun addCoords(coord: LatLng) {
@@ -287,8 +291,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
         dataBase.collection("locations").document(mapsCoord).set(
             hashMapOf(
-            "latitud" to latitude,
-            "longitud" to longitude)
+                "latitud" to latitude,
+                "longitud" to longitude)
         )
 
         dataBase.collection("temp").document(email).set(
@@ -297,6 +301,26 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         )
     }
 
+    override fun onMarkerClick(marker: Marker): Boolean {
+        // Retrieve the data from the marker.
+        val clickCount = marker.tag as? Int
+
+        // Check if a click count was set, then display the click count.
+        clickCount?.let {
+            //val newClickCount = it + 1
+            //marker.tag = newClickCount
+            /*Toast.makeText(
+                this,
+                "${marker.title} has been clicked.",
+                Toast.LENGTH_SHORT
+            ).show()*/
+            val intent = Intent(this, PointActivity::class.java)
+            startActivity(intent)
+        }
+        // Return false to indicate that we have not consumed the event and that we wish
+        // for the default behavior to occur (which is for the camera to move such that the
+        // marker is centered and for the marker's info window to open, if it has one).
+        return false
+    }
+
 }
-
-

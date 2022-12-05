@@ -45,12 +45,14 @@
 
     <TextView
         android:id="@+id/tvTit"
-        android:layout_width="121dp"
-        android:layout_height="28dp"
+        android:layout_width="197dp"
+        android:layout_height="43dp"
         android:layout_marginStart="25dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="81dp"
         android:text="Nombre"
+        android:textAllCaps="true"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/tvDir"
         app:layout_constraintEnd_toStartOf="@+id/ratingBar"
         app:layout_constraintHorizontal_bias="0.128"
@@ -60,8 +62,8 @@
 
     <RatingBar
         android:id="@+id/ratingBar"
-        android:layout_width="236dp"
-        android:layout_height="49dp"
+        android:layout_width="199dp"
+        android:layout_height="52dp"
         android:numStars="5"
         android:scaleX="0.5"
         android:scaleY="0.5"
@@ -76,8 +78,8 @@
 
     <TextView
         android:id="@+id/tvDir"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_width="125dp"
+        android:layout_height="59dp"
         android:layout_marginStart="3dp"
         android:layout_marginBottom="52dp"
         android:drawableStart="@drawable/ic_outline_location"
@@ -89,14 +91,14 @@
 
     <TextView
         android:id="@+id/tvHorario"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_width="125dp"
+        android:layout_height="55dp"
         android:layout_marginStart="3dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:drawableStart="@drawable/ic_baseline_access_time"
         android:text="Horario"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.071"
+        app:layout_constraintHorizontal_bias="0.047"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDir" />
 

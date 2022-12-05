@@ -39,7 +39,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     GoogleMap.OnMarkerClickListener{
 
     private val mMarkers = HashMap<String, Marker>()
-    private var markerTos: Marker? = null
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -48,6 +47,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     private lateinit var email :String
     private lateinit var db : DatabaseReference
 
+    private var markerTos: Marker? = null
+    private var markerTos1: Marker? = null
+    private var markerTos2: Marker? = null
+    private var markerTos3: Marker? = null
+    private var markerTos4: Marker? = null
+    private var markerTos5: Marker? = null
+    private var markerTos6: Marker? = null
+    private var markerTos7: Marker? = null
 
     override fun onMapReady(googleMap: GoogleMap) {
 
@@ -220,7 +227,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
          }
      }*/
 
-
     override fun onResumeFragments() {
         super.onResumeFragments()
         if (!::mMap.isInitialized) return
@@ -262,22 +268,28 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         mMap.moveCamera(CameraUpdateFactory.newLatLng(tos))
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(tos, 13f), 1, null)
         markerTos?.tag = 0
-        /*val tos1 = LatLng(-33.43788, -70.58087)
-        mMap.addMarker(MarkerOptions().position(tos1).title("Recieco"))
+        val tos1 = LatLng(-33.43788, -70.58087)
+        markerTos1=mMap.addMarker(MarkerOptions().position(tos1).title("Recieco"))
+        markerTos1?.tag = 0
         val tos2 = LatLng(-33.4656328, -70.6000689)
-        mMap.addMarker(MarkerOptions().position(tos2).title("Circular"))
+        markerTos2=mMap.addMarker(MarkerOptions().position(tos2).title("Circular"))
+        markerTos2?.tag = 0
         val tos3 = LatLng(-33.4619722, -70.574565)
-        mMap.addMarker(MarkerOptions().position(tos3).title("Sociedad puntos y tejidos SPA"))
+        markerTos3=mMap.addMarker(MarkerOptions().position(tos3).title("Sociedad puntos y tejidos SPA"))
+        markerTos3?.tag = 0
         val tos4 = LatLng(-33.4824628, -70.6095227)
-        mMap.addMarker(MarkerOptions().position(tos4).title("Punto verde"))
+        markerTos4=mMap.addMarker(MarkerOptions().position(tos4).title("Punto verde"))
+        markerTos4?.tag = 0
         val tos5 = LatLng(-33.4774616, -70.6034151)
-        mMap.addMarker(MarkerOptions().position(tos5).title("ECOCITEX"))
+        markerTos5=mMap.addMarker(MarkerOptions().position(tos5).title("ECOCITEX"))
+        markerTos5?.tag = 0
         val tos6 = LatLng(-33.4551468, -70.592697)
-        mMap.addMarker(MarkerOptions().position(tos6).title("Sin Envase"))
+        markerTos6=mMap.addMarker(MarkerOptions().position(tos6).title("Sin Envase"))
+        markerTos6?.tag = 0
         val tos7 = LatLng(-33.4520164, -70.5939894)
-        mMap.addMarker(MarkerOptions().position(tos7).title("Municipalidad de Ñuñoa"))*/
+        markerTos7=mMap.addMarker(MarkerOptions().position(tos7).title("Municipalidad de Ñuñoa"))
+        markerTos7?.tag = 0/**/
         mMap.setOnMarkerClickListener(this)
-
     }
 
     private fun addCoords(coord: LatLng) {
@@ -315,12 +327,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                 Toast.LENGTH_SHORT
             ).show()*/
             val intent = Intent(this, PointActivity::class.java)
-            startActivity(intent)
+            intent.putExtra("name",marker.title.toString())
+            Timer("SettingUp", false).schedule(350) {
+                startActivity(intent)
+            }
+
         }
         // Return false to indicate that we have not consumed the event and that we wish
         // for the default behavior to occur (which is for the camera to move such that the
         // marker is centered and for the marker's info window to open, if it has one).
         return false
     }
-
 }

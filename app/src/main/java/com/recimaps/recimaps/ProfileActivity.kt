@@ -30,7 +30,6 @@ class ProfileActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
         bd = FirebaseFirestore.getInstance()
 
-
         binding.bottomView.setOnItemSelectedListener {
             //val profileInte = Intent(this, ProfileActivity::class.java)
             val mapsInte = Intent(this, MapsActivity::class.java)

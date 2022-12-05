@@ -96,9 +96,7 @@ class AddInterestPointActivity : AppCompatActivity() {
                 }
             }
 
-
-
-        cancelPointButton.setOnClickListener {
+      cancelPointButton.setOnClickListener {
             val intent = Intent(this, MapsActivity::class.java)
             startActivity(intent)
         }
